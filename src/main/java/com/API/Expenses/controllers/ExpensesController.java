@@ -16,7 +16,6 @@ public class ExpensesController {
     @Autowired
     private ExpensesServices expensesServices;
 
-
     //* RUTA PARA AGREGAR GASTO :
 
     @PostMapping
@@ -27,6 +26,7 @@ public class ExpensesController {
             return ResponseEntity.ok(expensesServices.PostExpenses(expenses));
         }
     }
+
 
     //* RUTA PARA OBTENER LOS GASTOS :
 
