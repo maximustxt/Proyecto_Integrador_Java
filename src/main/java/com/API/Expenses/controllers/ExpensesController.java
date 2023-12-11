@@ -1,5 +1,6 @@
 package com.API.Expenses.controllers;
 
+import com.API.Expenses.DTO.ExpensesDTO;
 import com.API.Expenses.ExceptionCustom.ModelNotFoundException;
 import com.API.Expenses.models.Expenses;
 import com.API.Expenses.services.ExpensesServices;
@@ -16,6 +17,8 @@ public class ExpensesController {
     private ExpensesServices expensesServices;
 
 
+    //* RUTA PARA AGREGAR GASTO :
+
     @PostMapping
     public ResponseEntity<String> PostExpenses(@RequestBody Expenses expenses){
         if(expenses.getAmount() == null || expenses.getDate() == null || expenses.getCategory() == null  ) {
@@ -25,29 +28,31 @@ public class ExpensesController {
         }
     }
 
+    //* RUTA PARA OBTENER LOS GASTOS :
 
     @GetMapping
-    public ResponseEntity<List<Expenses>> GetExpenses(){
+    public ResponseEntity<List<ExpensesDTO>> GetExpenses(){
         return ResponseEntity.ok(expensesServices.GetExpenses());
     }
 
+    //* RUTA PARA OBTENER EL TOTAL DE LOS GASTOS :
 
     @GetMapping("/TotalExpenses")
     public ResponseEntity<Double> GetExpensesTotal(){
         return ResponseEntity.ok(expensesServices.GetExpensesTotal());
     }
 
-
+    //* RUTA PARA OBTENER EL MAYOR GASTO :
 
     @GetMapping("/MayorExpenses")
-    public ResponseEntity<Expenses> GetMayorExpense(){
+    public ResponseEntity<ExpensesDTO> GetMayorExpense(){
         return ResponseEntity.ok(expensesServices.GetMayorExpenses());
     }
 
-
+    //* RUTA PARA OBTENER EL DETAIL :
 
     @GetMapping("/Detail/{id}")
-    public ResponseEntity<Expenses> GetMayorExpense(@PathVariable Long id){
+    public ResponseEntity<ExpensesDTO> GetDetailExpense(@PathVariable Long id){
         if(expensesServices.MetodoParaComprobarSiExisteElID(id) == null){
             throw  new ModelNotFoundException("No se encontro ningun gasto con esta característica 😐!");
         } else {
@@ -55,7 +60,7 @@ public class ExpensesController {
         }
     }
 
-
+    //* RUTA PARA ELIMINAR EL GASTO :
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> DeleteExpenses(@PathVariable Long id){
@@ -66,6 +71,8 @@ public class ExpensesController {
        }
     }
 
+
+    //* RUTA PARA ACTUALIZAR EL GASTO :
 
     @PutMapping("/{id}")
     public ResponseEntity<String> PostExpenses(@RequestBody Expenses expenses,@PathVariable Long id){

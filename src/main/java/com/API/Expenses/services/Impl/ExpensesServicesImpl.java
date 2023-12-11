@@ -1,6 +1,6 @@
 package com.API.Expenses.services.Impl;
 
-import com.API.Expenses.ExceptionCustom.ModelNotFoundException;
+import com.API.Expenses.DTO.ExpensesDTO;
 import com.API.Expenses.models.Expenses;
 import com.API.Expenses.repository.InterfaceExpensesRepository;
 import com.API.Expenses.services.ExpensesServices;
@@ -15,28 +15,41 @@ public class ExpensesServicesImpl implements ExpensesServices {
     @Autowired
     private InterfaceExpensesRepository interfaceExpensesRepository;
 
+
+    //* OBTENER TODOS LOS GASTOS :
+
+
     @Override
-    public List<Expenses> GetExpenses() {
-        return interfaceExpensesRepository.findAll();
+    public List<ExpensesDTO> GetExpenses() {
+        List<Expenses> listExpenses = interfaceExpensesRepository.findAll();
+        List<ExpensesDTO> ListExpensesDTO = listExpenses.stream().map(expenses -> new ExpensesDTO(expenses.getId(),expenses.getAmount() , expenses.getCategory() , expenses.getDate())).toList();
+        return ListExpensesDTO;
     }
 
 
+    //* OBTENER DETALLE DEL GASTO :
+
+
     @Override
-    public Expenses GetDetailExpense(Long id) {
-        Expenses DetailExpenses = new Expenses();
+    public ExpensesDTO GetDetailExpense(Long id) {
+        ExpensesDTO detailExpensesDTO = new ExpensesDTO();
 
         List<Expenses> listExpenses = interfaceExpensesRepository.findAll();
 
         for(int i = 0; i<listExpenses.size(); i++){
             if(listExpenses.get(i).getId() == id){
-                DetailExpenses = listExpenses.get(i);
+                detailExpensesDTO.setCategory(listExpenses.get(i).getCategory());
+                detailExpensesDTO.setDate(listExpenses.get(i).getDate());
+                detailExpensesDTO.setAmount(listExpenses.get(i).getAmount());
+                detailExpensesDTO.setId(listExpenses.get(i).getId());
             }
         }
 
-        return DetailExpenses;
+        return detailExpensesDTO;
     }
 
 
+    //* OBTENER EL TOTAL DE LOS GASTOS :
 
     @Override
     public double GetExpensesTotal() {
@@ -51,26 +64,31 @@ public class ExpensesServicesImpl implements ExpensesServices {
         return TotalGastos;
     }
 
+
+    //* OBTENER EL MAYOR GASTO :
+
     @Override
-    public Expenses GetMayorExpenses() {
+    public ExpensesDTO GetMayorExpenses() {
 
       double MayorExpenses = 0;
 
-      Expenses mayorExpenses = new Expenses();
+      ExpensesDTO mayorExpensesDTO = new ExpensesDTO();
 
       List<Expenses> listExpenses = interfaceExpensesRepository.findAll();
 
         for(int i = 0; i<listExpenses.size(); i++){
             if(MayorExpenses < listExpenses.get(i).getAmount()){
-                mayorExpenses.setDate(listExpenses.get(i).getDate());
-                mayorExpenses.setAmount(listExpenses.get(i).getAmount());
-                mayorExpenses.setCategory(listExpenses.get(i).getCategory());
-                mayorExpenses.setId(listExpenses.get(i).getId());
+                mayorExpensesDTO.setDate(listExpenses.get(i).getDate());
+                mayorExpensesDTO.setAmount(listExpenses.get(i).getAmount());
+                mayorExpensesDTO.setCategory(listExpenses.get(i).getCategory());
+                mayorExpensesDTO.setId(listExpenses.get(i).getId());
             }
         }
-
-        return mayorExpenses;
+        return mayorExpensesDTO;
     }
+
+
+    //* ELIMINAR LOS GASTOS :
 
     @Override
     public String DeleteExpenses(Long id) {
@@ -78,11 +96,16 @@ public class ExpensesServicesImpl implements ExpensesServices {
         return "El gasto fue eliminado con exito!";
     }
 
+    //* CREAR LOS GASTOS :
+
     @Override
     public String PostExpenses(Expenses expenses) {
         interfaceExpensesRepository.save(expenses);
         return "El gasto fue agregado con exito!";
     }
+
+
+    //* ACTUALIZAR LOS GASTOS :
 
     @Override
     public String PutExpenses(Expenses expenses, Long id) {
@@ -96,6 +119,8 @@ public class ExpensesServicesImpl implements ExpensesServices {
 
     }
 
+    //* METODO PARA VERIFICAR ERRORES :
+
     @Override
     public Long MetodoParaComprobarSiExisteElID(Long id) {
         Expenses DetailExpenses = new Expenses();
@@ -107,7 +132,6 @@ public class ExpensesServicesImpl implements ExpensesServices {
                 DetailExpenses = listExpenses.get(i);
             }
         }
-
         return DetailExpenses.getId();
     }
 }
