@@ -12,15 +12,28 @@ public class Expenses {
     private String category;
     private String date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     public Expenses() {
     }
 
-    public Expenses(Long id, Double amount, String category, String date) {
+    public Expenses(Long id, Double amount, String category, String date, Users user) {
         this.id = id;
         this.amount = amount;
         this.category = category;
         this.date = date;
+        this.user = user;
+    }
+
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public Long getId() {

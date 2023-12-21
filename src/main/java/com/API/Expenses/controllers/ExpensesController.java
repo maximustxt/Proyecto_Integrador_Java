@@ -75,7 +75,7 @@ public class ExpensesController {
     //* RUTA PARA ACTUALIZAR EL GASTO :
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> PostExpenses(@RequestBody Expenses expenses,@PathVariable Long id){
+    public ResponseEntity<String> PutExpenses(@RequestBody Expenses expenses,@PathVariable Long id){
         if(expensesServices.MetodoParaComprobarSiExisteElID(id) == null){
             throw  new ModelNotFoundException("No se encontro ningun gasto con esta característica 😐!");
         } else if(expenses.getAmount() == null || expenses.getDate() == null || expenses.getCategory() == null  ) {

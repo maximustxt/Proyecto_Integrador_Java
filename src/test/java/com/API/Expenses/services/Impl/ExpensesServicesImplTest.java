@@ -2,6 +2,7 @@ package com.API.Expenses.services.Impl;
 
 import com.API.Expenses.DTO.ExpensesDTO;
 import com.API.Expenses.models.Expenses;
+import com.API.Expenses.models.Users;
 import com.API.Expenses.repository.InterfaceExpensesRepository;
 import com.API.Expenses.services.ExpensesServices;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,8 +44,8 @@ class ExpensesServicesImplTest {
     void getExpensesTest() {
         //* GIVEN :
         List<Expenses> expensesList = new ArrayList<>();
-        expensesList.add(new Expenses(1L, 100.0, "Food", "2023-12-13"));
-        expensesList.add(new Expenses(2L, 50.0, "Transportation", "2023-12-14"));
+        expensesList.add(new Expenses(1L, 100.0, "Food", "2023-12-13" , new Users()));
+        expensesList.add(new Expenses(2L, 50.0, "Transportation", "2023-12-14" , new Users()));
 
 
         //* WHEN :
@@ -59,15 +60,15 @@ class ExpensesServicesImplTest {
     @Test
     void getDetailExpense() {
         //* GIVEN :
-        ExpensesDTO expensesDetailDTO = new ExpensesDTO(1L, 500.5, "Zapatillas" , "13/12/2023");
+        ExpensesDTO expensesDetailDTO = new ExpensesDTO(1L, 500.5, "Zapatillas" , "13/12/2023", new Users());
 
 
         //* Lista Mock :
         List<Expenses> ListExpensesMock = new ArrayList<>();
-        ListExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas" , "13/12/2023"));
-        ListExpensesMock.add(new Expenses(2L, 600.5, "Pantalones" , "13/12/2023"));
-        ListExpensesMock.add(new Expenses(3L, 700.5, "Remeras" , "13/12/2023"));
-        ListExpensesMock.add(new Expenses(4L, 800.5, "Zandalias" , "13/12/2023"));
+        ListExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas" , "13/12/2023" , new Users()));
+        ListExpensesMock.add(new Expenses(2L, 600.5, "Pantalones" , "13/12/2023" , new Users()));
+        ListExpensesMock.add(new Expenses(3L, 700.5, "Remeras" , "13/12/2023" , new Users()));
+        ListExpensesMock.add(new Expenses(4L, 800.5, "Zandalias" , "13/12/2023" , new Users()));
 
         //* WHEN :
         when(interfaceExpensesRepository.findAll()).thenReturn(ListExpensesMock);
@@ -85,10 +86,10 @@ class ExpensesServicesImplTest {
     void getExpensesTotal() {
         //* GIVEN :
         List<Expenses> ListExpensesMock = new ArrayList<>();
-        ListExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas" , "13/12/2023"));
-        ListExpensesMock.add(new Expenses(2L, 600.5, "Pantalones" , "13/12/2023"));
-        ListExpensesMock.add(new Expenses(3L, 700.5, "Remeras" , "13/12/2023"));
-        ListExpensesMock.add(new Expenses(4L, 800.5, "Zandalias" , "13/12/2023"));
+        ListExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas" , "13/12/2023" , new Users()));
+        ListExpensesMock.add(new Expenses(2L, 600.5, "Pantalones" , "13/12/2023" , new Users()));
+        ListExpensesMock.add(new Expenses(3L, 700.5, "Remeras" , "13/12/2023" , new Users()));
+        ListExpensesMock.add(new Expenses(4L, 800.5, "Zandalias" , "13/12/2023" , new Users()));
 
         double TotalExpenses = 0.0;
 
@@ -110,10 +111,10 @@ class ExpensesServicesImplTest {
     void getMayorExpenses() {
         // GIVEN
         List<Expenses> listExpensesMock = new ArrayList<>();
-        listExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas", "13/12/2023"));
-        listExpensesMock.add(new Expenses(2L, 600.5, "Pantalones", "13/12/2023"));
-        listExpensesMock.add(new Expenses(3L, 700.5, "Remeras", "13/12/2023"));
-        listExpensesMock.add(new Expenses(4L, 800.5, "Zandalias", "13/12/2023"));
+        listExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas", "13/12/2023" , new Users()));
+        listExpensesMock.add(new Expenses(2L, 600.5, "Pantalones", "13/12/2023" , new Users()));
+        listExpensesMock.add(new Expenses(3L, 700.5, "Remeras", "13/12/2023" , new Users()));
+        listExpensesMock.add(new Expenses(4L, 800.5, "Zandalias", "13/12/2023" , new Users()));
 
         ExpensesDTO expectedExpensesDTO = new ExpensesDTO();
         expectedExpensesDTO.setId(4L);
@@ -136,7 +137,7 @@ class ExpensesServicesImplTest {
     void deleteExpenses() {
         //* GIVEN :
         String ResultadoQueDebeDevolver = "El gasto fue eliminado con exito!";
-        Expenses expenses = new Expenses(1L, 500.5, "Zapatillas", "13/12/2023");
+        Expenses expenses = new Expenses(1L, 500.5, "Zapatillas", "13/12/2023" , new Users());
 
         //* WHEN :
         String result = expensesServices.DeleteExpenses(expenses.getId());
@@ -151,7 +152,7 @@ class ExpensesServicesImplTest {
     void postExpenses() {
         //* GIVEN :
         String ResultadoQueDebeDevolver = "El gasto fue agregado con exito!";
-        Expenses expenses = new Expenses(1L, 500.5, "Zapatillas", "13/12/2023");
+        Expenses expenses = new Expenses(1L, 500.5, "Zapatillas", "13/12/2023" , new Users());
         //* WHEN :
         String result = expensesServices.PostExpenses(expenses);
         //* THEN :
@@ -163,8 +164,8 @@ class ExpensesServicesImplTest {
     void putExpenses() {
         // GIVEN
         Long idToUpdate = 1L;
-        Expenses existingExpenses = new Expenses(idToUpdate, 500.5, "Zapatillas", "13/12/2023");
-        Expenses updatedExpenses = new Expenses(idToUpdate, 600.5, "Pantalones", "14/12/2023");
+        Expenses existingExpenses = new Expenses(idToUpdate, 500.5, "Zapatillas", "13/12/2023" , new Users());
+        Expenses updatedExpenses = new Expenses(idToUpdate, 600.5, "Pantalones", "14/12/2023" , new Users());
 
         when(interfaceExpensesRepository.findById(eq(idToUpdate))).thenReturn(Optional.of(existingExpenses));
 
@@ -191,10 +192,10 @@ class ExpensesServicesImplTest {
         //* GIVEN :
         Long Id = 2L;
         List<Expenses> listExpensesMock = new ArrayList<>();
-        listExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas", "13/12/2023"));
-        listExpensesMock.add(new Expenses(2L, 600.5, "Pantalones", "13/12/2023"));
-        listExpensesMock.add(new Expenses(3L, 700.5, "Remeras", "13/12/2023"));
-        listExpensesMock.add(new Expenses(4L, 800.5, "Zandalias", "13/12/2023"));
+        listExpensesMock.add(new Expenses(1L, 500.5, "Zapatillas", "13/12/2023" , new Users()));
+        listExpensesMock.add(new Expenses(2L, 600.5, "Pantalones", "13/12/2023" , new Users()));
+        listExpensesMock.add(new Expenses(3L, 700.5, "Remeras", "13/12/2023" , new Users()));
+        listExpensesMock.add(new Expenses(4L, 800.5, "Zandalias", "13/12/2023" , new Users()));
 
         //* WHEN :
         when(interfaceExpensesRepository.findAll()).thenReturn(listExpensesMock);

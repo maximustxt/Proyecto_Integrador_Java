@@ -1,20 +1,28 @@
 package com.API.Expenses.DTO;
 
+
+import com.API.Expenses.models.Users;
+
+
 public class ExpensesDTO {
     private Long id;
     private Double amount;
     private String category;
     private String date;
+    
 
     public ExpensesDTO() {
     }
 
-    public ExpensesDTO(Long id, Double amount, String category, String date) {
+    public ExpensesDTO(Long id, Double amount, String category, String date, Users user) {
         this.id = id;
         this.amount = amount;
         this.category = category;
         this.date = date;
+  
     }
+
+
 
     public Long getId() {
         return id;
